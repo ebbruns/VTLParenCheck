@@ -1,7 +1,8 @@
-# ParenCheck v 0.1
+# ParenCheck v 0.2
 # Written by Evan Bruns
 # Intended to help users find bugs in .vtl code without an IDE
-# (okay paren matching errors like this one))
+# Currently works for parens, square brackets, and curly brackets.
+# Does not check for improper nesting (i.e. {(}) is ignored)
 
 
 import fileinput
@@ -10,12 +11,25 @@ import fileinput
 # Runs on each line to check for matching parens
 def matches(line):
     paren_count = 0
+    curly_count = 0
+    square_count = 0
     for char in line:
+        if (paren_count < 0 or curly_count < 0 or square_count < 0):
+            return False
         if char == "(":
-            paren_count -= 1
-        elif char == ")":
             paren_count += 1
-    return paren_count == 0
+        elif char == ")":
+            paren_count -= 1
+        elif char == "{":
+            curly_count += 1
+        elif char == "}":
+            curly_count -= 1
+        elif char == "[":
+            square_count += 1
+        elif char == "]":
+            square_count -= 1
+
+    return (paren_count == 0 and curly_count == 0 and square_count == 0)
 
 
 # The function that starts the ball rolling, tracks index, and presents output to the user.
