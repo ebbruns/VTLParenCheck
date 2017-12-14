@@ -30,7 +30,7 @@ def matches(line):
         elif char == "]":
             square_count -= 1
 
-    return paren_count == 0 and curly_count == 0 and square_count == 0
+    return paren_count == 0 and curly_count == 0 and square_count == 0 and line[-2] != ";"
 
 
 # The function that starts the ball rolling, tracks index, and presents output to the user.
